@@ -1,0 +1,109 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="360" viewBox="0 0 1200 360" role="img" aria-labelledby="title desc">
+  <title id="title">Sky Blaster</title>
+  <desc id="desc">Browser-native vertical shoot-'em-up: six modes, 3 ships, 5 weapons, local meta progression, procedural audio. Play instantly at 60 fps on desktop and mobile.</desc>
+
+  <defs>
+    <linearGradient id="spaceBg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#060614"/>
+      <stop offset="0.5" stop-color="#0a0e22"/>
+      <stop offset="1" stop-color="#060614"/>
+    </linearGradient>
+    <linearGradient id="laserGrad" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="0.25" stop-color="#ff88ff"/>
+      <stop offset="1" stop-color="#ff88ff" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="panelGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b1024"/>
+      <stop offset="1" stop-color="#070a18"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="360" rx="24" fill="url(#spaceBg)"/>
+
+  <!-- faint starfield on the title side -->
+  <g fill="#ccddff">
+    <circle cx="120" cy="40" r="1.4" opacity="0.5"/>
+    <circle cx="260" cy="96" r="1" opacity="0.35"/>
+    <circle cx="80" cy="180" r="1.2" opacity="0.4"/>
+    <circle cx="340" cy="40" r="1" opacity="0.3"/>
+    <circle cx="200" cy="300" r="1.3" opacity="0.45"/>
+    <circle cx="40" cy="250" r="1" opacity="0.3"/>
+  </g>
+
+  <!-- ===================== Title block ===================== -->
+  <text x="64" y="72" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="18" letter-spacing="3" fill="#7e8caa">BROWSER ARCADE SHOOT-'EM-UP</text>
+  <text x="62" y="142" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="76" font-weight="800" letter-spacing="-1">
+    <tspan fill="#eaf2ff">SKY </tspan><tspan fill="#4de8ff">BLASTER</tspan>
+  </text>
+  <text x="64" y="192" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="22" fill="#aebcd8">Six modes · 3 ships · 5 weapons · local progression</text>
+  <text x="64" y="222" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="20" fill="#8a99ba">Instant browser play — no install, 60 fps on desktop &amp; mobile</text>
+
+  <rect x="64" y="254" width="196" height="48" rx="24" fill="#4de8ff"/>
+  <text x="162" y="285" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="21" font-weight="700" fill="#06080f">▶ PLAY FREE</text>
+  <text x="284" y="284" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="17" fill="#7e8caa">npm run dev</text>
+
+  <!-- divider -->
+  <line x1="628" y1="40" x2="628" y2="320" stroke="#ffffff" stroke-opacity="0.08" stroke-width="1"/>
+
+  <!-- ===================== Playfield proof ===================== -->
+  <g transform="translate(648 0)">
+    <rect x="16" y="20" width="520" height="320" rx="18" fill="url(#panelGrad)" stroke="#4de8ff" stroke-opacity="0.28" stroke-width="1.5"/>
+
+    <!-- starfield -->
+    <g fill="#ccddff">
+      <circle cx="60" cy="60" r="1.3" opacity="0.6"/>
+      <circle cx="160" cy="44" r="1" opacity="0.4"/>
+      <circle cx="260" cy="70" r="1.4" opacity="0.55"/>
+      <circle cx="360" cy="50" r="1" opacity="0.35"/>
+      <circle cx="460" cy="64" r="1.2" opacity="0.5"/>
+      <circle cx="100" cy="140" r="1" opacity="0.4"/>
+      <circle cx="320" cy="120" r="1.3" opacity="0.5"/>
+      <circle cx="470" cy="150" r="1" opacity="0.35"/>
+      <circle cx="60" cy="220" r="1.2" opacity="0.45"/>
+      <circle cx="420" cy="210" r="1" opacity="0.35"/>
+    </g>
+
+    <!-- HUD top bar -->
+    <text x="32" y="48" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" fill="#7e8caa">SCORE 0042</text>
+    <rect x="240" y="38" width="160" height="8" rx="4" fill="#1c2740"/>
+    <rect x="240" y="38" width="118" height="8" rx="4" fill="#ff4444"/>
+
+    <!-- enemy bullets (amber, falling) -->
+    <g fill="#ffb347">
+      <circle cx="150" cy="180" r="3.5"/>
+      <circle cx="300" cy="200" r="3.5"/>
+      <circle cx="430" cy="160" r="3.5"/>
+    </g>
+
+    <!-- enemies (inverted hulls, red/orange) -->
+    <g>
+      <polygon points="110,96 98,74 122,74" fill="#ff5a4a"/>
+      <rect x="105" y="76" width="10" height="6" rx="2" fill="#ffd2cc"/>
+      <polygon points="260,100 248,78 272,78" fill="#ff7a4a"/>
+      <rect x="255" y="80" width="10" height="6" rx="2" fill="#ffe0cc"/>
+      <polygon points="410,94 398,72 422,72" fill="#ff5a4a"/>
+      <rect x="405" y="74" width="10" height="6" rx="2" fill="#ffd2cc"/>
+    </g>
+
+    <!-- player lasers (magenta) -->
+    <rect x="261" y="120" width="4" height="150" fill="url(#laserGrad)"/>
+    <rect x="265" y="120" width="4" height="150" fill="url(#laserGrad)"/>
+
+    <!-- player ship (cyan delta) -->
+    <g transform="translate(263 286)">
+      <polygon points="0,-22 18,16 -18,16" fill="#4de8ff"/>
+      <polygon points="0,-22 10,-4 -10,-4" fill="#eafcff"/>
+      <polygon points="-18,16 -26,8 -14,8" fill="#2bb6d6"/>
+      <polygon points="18,16 26,8 14,8" fill="#2bb6d6"/>
+      <rect x="-3" y="-14" width="6" height="10" rx="2" fill="#0a1828"/>
+    </g>
+
+    <!-- lives dots -->
+    <g fill="#4de8ff">
+      <circle cx="40" cy="320" r="4"/>
+      <circle cx="56" cy="320" r="4"/>
+      <circle cx="72" cy="320" r="4"/>
+    </g>
+  </g>
+</svg>
