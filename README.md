@@ -35,11 +35,11 @@ A thin React + TypeScript shell hosts a fixed-timestep Canvas 2D game loop, with
        alt="Six modes: Story, Endless, Boss Rush, Daily, Practice, and Co-op Endless (2P online).">
 </p>
 
-| Mode              | What you do                                            |
-| ----------------- | ------------------------------------------------------ |
-| **Story**         | Campaign across 4 chapters with environmental hazards  |
+| Mode              | What you do                                           |
+| ----------------- | ----------------------------------------------------- |
+| **Story**         | Campaign across 4 chapters with environmental hazards |
 | **Endless**       | Survive escalating waves for a high score             |
-| **Boss Rush**     | Pure boss encounters                                   |
+| **Boss Rush**     | Pure boss encounters                                  |
 | **Daily**         | One seeded run, identical for every player            |
 | **Practice**      | Learn the ropes with invincibility on (`I`)           |
 | **Co-op Endless** | 2P online — host (`H`) + guest (`J`), 60 Hz sync      |
