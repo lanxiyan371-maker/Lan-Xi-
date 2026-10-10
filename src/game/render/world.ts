@@ -1,4 +1,5 @@
 import type { GameData, Bullet, Player, PowerUp } from '../types';
+import { drawArt, drawArtExhaust, bulletArt } from './art';
 import { getWeapon } from '../weapons';
 import { coopSeatForShip, resolveCoopShipPalette } from '../coop';
 
@@ -74,6 +75,16 @@ export function drawPlayer(ctx: CanvasRenderingContext2D, g: GameData, p: Player
     ctx.closePath();
     ctx.stroke();
     ctx.globalAlpha = 1;
+  }
+  drawArtExhaust(ctx, g.frameCount, p.height / 2 + 7);
+  if (drawArt(ctx, `player_${p.aircraftId}`, 0, 0, p.width + 8, p.height)) {
+    if (seat) {
+      ctx.strokeStyle = craft.accent;
+      ctx.lineWidth = 2;
+      ctx.strokeRect(-p.width / 2 - 3, -p.height / 2 - 3, p.width + 6, p.height + 6);
+    }
+    ctx.restore();
+    return;
   }
   const flicker = 0.8 + Math.random() * 0.4;
   const flameH = 10 + Math.sin(Date.now() * 0.02) * 3;
@@ -153,6 +164,12 @@ export function drawPlayer(ctx: CanvasRenderingContext2D, g: GameData, p: Player
 export function drawBullet(ctx: CanvasRenderingContext2D, b: Bullet) {
   ctx.save();
   ctx.translate(b.x, b.y);
+  // Source player rounds point up; enemy rounds point down.
+  const rotation = Math.atan2(b.vy, b.vx) + (b.isPlayer ? Math.PI / 2 : -Math.PI / 2);
+  if (drawArt(ctx, bulletArt(b), 0, 0, b.width + 2, b.height, rotation)) {
+    ctx.restore();
+    return;
+  }
   if (b.isPlayer) {
     const gr = ctx.createLinearGradient(0, -b.height / 2, 0, b.height / 2);
     gr.addColorStop(0, '#fff');
@@ -190,6 +207,13 @@ export function drawBullet(ctx: CanvasRenderingContext2D, b: Bullet) {
 export function drawPowerUp(ctx: CanvasRenderingContext2D, pw: PowerUp) {
   ctx.save();
   ctx.translate(pw.x, pw.y);
+  if (drawArt(ctx, `pickup_${pw.type}`, 0, 0, 27, 27)) {
+    if (pw.type === 'weapon' && pw.weaponId) {
+      drawArt(ctx, `icon_${pw.weaponId}`, 0, -17, 14, 14);
+    }
+    ctx.restore();
+    return;
+  }
   const pulse = 1 + Math.sin(Date.now() * 0.008) * 0.15;
   ctx.scale(pulse, pulse);
   const col: Record<PowerUp['type'], string> = {

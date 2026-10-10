@@ -105,12 +105,12 @@ export function applyCoopError(g: GameData, message: string): void {
 }
 
 const COOP_ERROR_LABELS: Record<string, string> = {
-  room_full: 'Room is full',
-  role_taken: 'Role already taken in this room',
-  game_started: 'That room already started',
-  invalid_code: 'Enter a valid 6-character code',
-  disconnected: 'Disconnected from room',
-  connection_failed: 'Could not reach co-op server — check VITE_PARTYKIT_HOST',
+  room_full: '房间已满',
+  role_taken: '该位置已被占用',
+  game_started: '该房间已开始游戏',
+  invalid_code: '请输入有效的 6 位房间码',
+  disconnected: '已与房间断开连接',
+  connection_failed: '无法连接合作服务器，请检查连接配置',
 };
 
 /** Human-readable text for a coop `error` message code. */
@@ -126,37 +126,40 @@ export interface CoopLobbyCopy {
 /** Menu-facing copy for the current coop lobby phase. */
 export function describeCoopLobby(g: GameData): CoopLobbyCopy {
   if (g.coopLobbyStatus === 'error' && g.coopError) {
-    return { value: describeCoopError(g.coopError).toUpperCase(), detail: 'H to host · J to join' };
+    return {
+      value: describeCoopError(g.coopError).toUpperCase(),
+      detail: 'H 创建房间 · J 加入房间',
+    };
   }
   switch (g.coopLobbyStatus) {
     case 'entering_code': {
       const draft = g.coopCodeDraft.padEnd(6, '_');
       return {
-        value: `TYPE CODE  ${draft.split('').join(' ')}`,
-        detail: 'Letters/digits · Backspace · Enter to join · Esc cancel',
+        value: `房间码  ${draft.split('').join(' ')}`,
+        detail: '输入字母或数字 · 退格删除 · 回车加入 · Esc 取消',
       };
     }
     case 'connecting':
-      return { value: 'CONNECTING…', detail: '' };
+      return { value: '正在连接…', detail: '' };
     case 'waiting_for_guest':
       return {
-        value: `CODE ${g.coopRoomCode} · WAITING FOR GUEST`,
-        detail: 'Share the code — guest presses J, then types it here',
+        value: `房间 ${g.coopRoomCode} · 等待队友`,
+        detail: '分享房间码，队友按 J 输入后加入',
       };
     case 'waiting_for_host':
       return {
-        value: `CODE ${g.coopRoomCode} · WAITING FOR HOST`,
-        detail: 'Host presses SPACE when ready',
+        value: `房间 ${g.coopRoomCode} · 等待房主`,
+        detail: '准备好后，由房主按空格开始',
       };
     case 'ready':
       return g.coopRole === 'host'
-        ? { value: `CODE ${g.coopRoomCode} · READY`, detail: 'PRESS SPACE TO START' }
-        : { value: `CODE ${g.coopRoomCode} · READY`, detail: 'Waiting for host to start' };
+        ? { value: `房间 ${g.coopRoomCode} · 已就绪`, detail: '按空格开始' }
+        : { value: `房间 ${g.coopRoomCode} · 已就绪`, detail: '等待房主开始' };
     case 'idle':
     default:
       return {
-        value: 'H: HOST ROOM · J: JOIN ROOM',
-        detail: 'Join: press J, type the 6-char code on screen, Enter',
+        value: 'H 创建房间 · J 加入房间',
+        detail: '按 J 输入 6 位房间码，再按回车加入',
       };
   }
 }

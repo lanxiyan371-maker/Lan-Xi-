@@ -1,17 +1,17 @@
 {
-  "name": "polished-arcade-shooter",
+  "name": "sky-blaster-pyramid",
   "private": true,
   "version": "0.10.0",
-  "description": "Sky Blaster — browser vertical shoot-'em-up with four modes, meta progression, and procedural audio. React, TypeScript, Canvas.",
+  "description": "Chinese pixel-apocalypse STG with M5Stack AI Pyramid NPU co-pilot and same-seed score race",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/phaethix/polished-arcade-shooter.git"
+    "url": "git+https://github.com/lanxiyan371-maker/Lan-Xi-.git"
   },
   "bugs": {
-    "url": "https://github.com/phaethix/polished-arcade-shooter/issues"
+    "url": "https://github.com/lanxiyan371-maker/Lan-Xi-/issues"
   },
-  "homepage": "https://phaethix.github.io/polished-arcade-shooter/",
+  "homepage": "https://github.com/lanxiyan371-maker/Lan-Xi-",
   "type": "module",
   "engines": {
     "node": ">=18"

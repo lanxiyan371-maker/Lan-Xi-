@@ -1,4 +1,5 @@
 import type { GameData } from '../types';
+import { drawArtExplosion } from './art';
 import { CANVAS_W, CANVAS_H, GRAZE_RADIUS } from '../core/constants';
 import { getWaveAnnounce } from '../modes';
 import { getChapter } from '../chapters';
@@ -12,6 +13,14 @@ export function drawParticles(ctx: CanvasRenderingContext2D, g: GameData) {
     const a = Math.max(0, pt.life / pt.maxLife);
     ctx.globalAlpha = a;
     ctx.fillStyle = pt.color;
+    if (pt.type === 'ring' && ['#ff6644', '#ff994488', '#ff884488', '#ff4444'].includes(pt.color)) {
+      ctx.save();
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.globalAlpha = Math.min(1, a * 2);
+      const rendered = drawArtExplosion(ctx, pt.x, pt.y, 1 - a, (pt.startSize ?? 35) * 2);
+      ctx.restore();
+      if (rendered) continue;
+    }
     if (pt.type === 'ring') {
       const progress = 1 - a;
       const r = (pt.startSize ?? 30) * progress;
@@ -44,7 +53,7 @@ export function drawParticles(ctx: CanvasRenderingContext2D, g: GameData) {
     const a = Math.max(0, pt.life / pt.maxLife);
     ctx.globalAlpha = a;
     ctx.fillStyle = pt.color;
-    ctx.font = `bold ${pt.size}px "Segoe UI",Arial,sans-serif`;
+    ctx.font = `bold ${pt.size}px "Microsoft YaHei","Noto Sans CJK SC","PingFang SC","Segoe UI",Arial,sans-serif`;
     ctx.textAlign = 'center';
     ctx.fillText(pt.text ?? '', pt.x, pt.y);
   }
@@ -95,10 +104,11 @@ export function drawComboBanner(ctx: CanvasRenderingContext2D, g: GameData) {
   if (g.state !== 'playing' || g.combo < 3) return;
   ctx.globalAlpha = Math.min(1, g.comboTimer);
   ctx.fillStyle = '#fd0';
-  ctx.font = 'bold 28px "Segoe UI",Arial,sans-serif';
+  ctx.font =
+    'bold 28px "Microsoft YaHei","Noto Sans CJK SC","PingFang SC","Segoe UI",Arial,sans-serif';
   ctx.textAlign = 'center';
   const bx = Math.sin(Date.now() * 0.01) * 3;
-  ctx.fillText(`${g.combo}x COMBO!`, CANVAS_W / 2, 120 + bx);
+  ctx.fillText(`${g.combo} 连击！`, CANVAS_W / 2, 120 + bx);
   ctx.globalAlpha = 1;
 }
 
@@ -115,7 +125,8 @@ export function drawWaveAnnounce(ctx: CanvasRenderingContext2D, g: GameData) {
     ctx.globalAlpha = a;
     ctx.translate(CANVAS_W / 2, CANVAS_H / 2 - 30);
     ctx.scale(1 + (1 - a) * 0.3, 1 + (1 - a) * 0.3);
-    ctx.font = 'bold 32px "Segoe UI",Arial,sans-serif';
+    ctx.font =
+      'bold 32px "Microsoft YaHei","Noto Sans CJK SC","PingFang SC","Segoe UI",Arial,sans-serif';
     ctx.textAlign = 'center';
     if (announce.boss) {
       ctx.fillStyle = '#f44';
@@ -124,7 +135,8 @@ export function drawWaveAnnounce(ctx: CanvasRenderingContext2D, g: GameData) {
     } else ctx.fillStyle = '#fff';
     ctx.fillText(announce.main, 0, 0);
     if (announce.sub) {
-      ctx.font = '14px "Segoe UI",Arial,sans-serif';
+      ctx.font =
+        '14px "Microsoft YaHei","Noto Sans CJK SC","PingFang SC","Segoe UI",Arial,sans-serif';
       ctx.fillStyle = chapter.hudColor;
       ctx.fillText(announce.sub, 0, 24);
     }
@@ -137,12 +149,13 @@ export function drawPausedOverlay(ctx: CanvasRenderingContext2D, g: GameData) {
   ctx.fillStyle = 'rgba(0,0,0,0.6)';
   ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
   ctx.fillStyle = '#fff';
-  ctx.font = 'bold 40px "Segoe UI",Arial,sans-serif';
+  ctx.font =
+    'bold 40px "Microsoft YaHei","Noto Sans CJK SC","PingFang SC","Segoe UI",Arial,sans-serif';
   ctx.textAlign = 'center';
-  ctx.fillText('PAUSED', CANVAS_W / 2, CANVAS_H / 2 - 20);
-  ctx.font = '18px "Segoe UI",Arial,sans-serif';
+  ctx.fillText('已暂停', CANVAS_W / 2, CANVAS_H / 2 - 20);
+  ctx.font = '18px "Microsoft YaHei","Noto Sans CJK SC","PingFang SC","Segoe UI",Arial,sans-serif';
   ctx.fillStyle = '#aac';
-  ctx.fillText('Press ESC or tap to resume', CANVAS_W / 2, CANVAS_H / 2 + 20);
+  ctx.fillText('按 Esc 或点击屏幕继续', CANVAS_W / 2, CANVAS_H / 2 + 20);
 }
 
 export function drawSlowMotionOverlay(ctx: CanvasRenderingContext2D, g: GameData) {

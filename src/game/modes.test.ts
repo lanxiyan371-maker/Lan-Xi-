@@ -140,16 +140,16 @@ describe('getDailyModifierLabel', () => {
 
 describe('getWaveLabel', () => {
   it('uses STAGE prefix in story', () => {
-    expect(getWaveLabel(mkGame({ gameMode: 'story', wave: 3 }))).toBe('STAGE 3');
+    expect(getWaveLabel(mkGame({ gameMode: 'story', wave: 3 }))).toBe('第 3 关');
   });
 
   it('uses BOSS prefix in boss_rush', () => {
-    expect(getWaveLabel(mkGame({ gameMode: 'boss_rush', wave: 2 }))).toBe('BOSS 2');
+    expect(getWaveLabel(mkGame({ gameMode: 'boss_rush', wave: 2 }))).toBe('首领 2');
   });
 
   it('uses WAVE prefix in endless and daily', () => {
-    expect(getWaveLabel(mkGame({ gameMode: 'endless', wave: 7 }))).toBe('WAVE 7');
-    expect(getWaveLabel(mkGame({ gameMode: 'daily', wave: 1 }))).toBe('WAVE 1');
+    expect(getWaveLabel(mkGame({ gameMode: 'endless', wave: 7 }))).toBe('第 7 波');
+    expect(getWaveLabel(mkGame({ gameMode: 'daily', wave: 1 }))).toBe('第 1 波');
   });
 });
 
@@ -353,9 +353,9 @@ describe('practice start wave helpers', () => {
   });
 
   it('labels chapter and marks boss waves', () => {
-    expect(practiceStartWaveLabel(1)).toBe('Deep Space');
-    expect(practiceStartWaveLabel(10)).toBe('Asteroid Belt · boss');
-    expect(practiceStartWaveLabel(5)).toContain('boss');
+    expect(practiceStartWaveLabel(1)).toBe('工业废墟');
+    expect(practiceStartWaveLabel(10)).toBe('废铁荒原 · 首领');
+    expect(practiceStartWaveLabel(5)).toContain('首领');
   });
 });
 

@@ -11,7 +11,7 @@ const __dirname = path.dirname(__filename);
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => ({
   // Project site: https://<user>.github.io/<repo>/
-  base: mode === 'pages' ? '/polished-arcade-shooter/' : '/',
+  base: mode === 'pages' ? './' : '/',
   plugins: [react(), tailwindcss(), viteSingleFile()],
   resolve: {
     alias: {

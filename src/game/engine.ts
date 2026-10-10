@@ -95,6 +95,8 @@ export function createGameData(): GameData {
     slowMotion: 1,
     slowMotionTimer: 0,
     frameCount: 0,
+    powerUpsCollected: 0,
+    powerUpsMissed: 0,
     stars: [],
     nebulae: [],
     chapterId: 'space',
@@ -215,6 +217,9 @@ export function resetGame(g: GameData): void {
     slowMotion: 1,
     slowMotionTimer: 0,
     frameCount: 0,
+    powerUpsCollected: 0,
+    powerUpsMissed: 0,
+    aiDemo: false,
     screenShake: { intensity: 0, duration: 0, timer: 0 },
     specialSpawns: { sniper: false, healer: false },
     hazardSpawnTimer: 0,
@@ -294,12 +299,13 @@ export function beginCoopRun(g: GameData, payload: CoopStartPayload): void {
 export function update(g: GameData, input: InputState, dt: number): void {
   if (g.state !== 'playing') return;
   g.frameCount++;
+  if (g.race && g.waveAnnounceTimer > 0) g.waveAnnounceTimer--;
   tickAchievementToast(g, dt);
 
-  const tm = tickSlowMotion(g, dt);
+  const tm = g.race ? 1 : tickSlowMotion(g, dt);
   updatePlayerFromInput(g, input, dt);
 
-  if (updateWaves(g)) return;
+  if (!g.race && updateWaves(g)) return;
 
   updateEnemies(g, dt, tm);
   updateHazards(g, dt, tm);
@@ -331,7 +337,8 @@ export function render(ctx: CanvasRenderingContext2D, g: GameData, cw: number, c
   ctx.translate(ox, oy);
   ctx.scale(scale, scale);
 
-  if (g.screenShake.timer > 0) {
+  // Frozen scenes do not advance effect timers; never shake their overlays.
+  if (g.state === 'playing' && g.screenShake.timer > 0) {
     const a = g.screenShake.intensity * (g.screenShake.timer / (g.screenShake.duration || 1));
     ctx.translate((Math.random() - 0.5) * a * 2, (Math.random() - 0.5) * a * 2);
   }
@@ -379,7 +386,20 @@ export function render(ctx: CanvasRenderingContext2D, g: GameData, cw: number, c
     drawWaveAnnounce(ctx, g);
   }
   if (g.state === 'paused') drawPausedOverlay(ctx, g);
-  if (g.state === 'gameover') drawGameOver(ctx, g);
+  if (g.state === 'gameover') {
+    if (!g.race) drawGameOver(ctx, g);
+    else {
+      ctx.fillStyle = 'rgba(0,0,0,0.65)';
+      ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
+      ctx.textAlign = 'center';
+      ctx.fillStyle = '#e2c281';
+      ctx.font = 'bold 26px "Microsoft YaHei",sans-serif';
+      ctx.fillText('本方战斗结束', CANVAS_W / 2, 310);
+      ctx.fillStyle = '#c5cebd';
+      ctx.font = '14px "Microsoft YaHei",sans-serif';
+      ctx.fillText('成绩已冻结 · 等待比赛结算', CANVAS_W / 2, 344);
+    }
+  }
   drawAchievementToast(ctx, g);
 
   drawSlowMotionOverlay(ctx, g);

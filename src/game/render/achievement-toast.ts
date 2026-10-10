@@ -25,10 +25,12 @@ export function drawAchievementToast(ctx: CanvasRenderingContext2D, g: GameData)
 
   ctx.textAlign = 'center';
   ctx.fillStyle = '#fd4';
-  ctx.font = 'bold 11px "Segoe UI",Arial,sans-serif';
-  ctx.fillText('ACHIEVEMENT UNLOCKED', CANVAS_W / 2, y + 16);
+  ctx.font =
+    'bold 11px "Microsoft YaHei","Noto Sans CJK SC","PingFang SC","Segoe UI",Arial,sans-serif';
+  ctx.fillText('成就已解锁', CANVAS_W / 2, y + 16);
   ctx.fillStyle = '#fff';
-  ctx.font = 'bold 15px "Segoe UI",Arial,sans-serif';
+  ctx.font =
+    'bold 15px "Microsoft YaHei","Noto Sans CJK SC","PingFang SC","Segoe UI",Arial,sans-serif';
   ctx.fillText(def.name, CANVAS_W / 2, y + 36);
   ctx.restore();
 }

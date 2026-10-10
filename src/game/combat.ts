@@ -9,6 +9,7 @@ import { coinRewardForEnemy, recordEnemyKill } from './progress';
 import { awardRunCoins, queueAchievement } from './run-progress';
 import { isCoopMode, shouldTeamWipe } from './coop';
 import * as sfx from './audio';
+import { createRng } from './core/rng';
 
 export function playerShoot(g: GameData, p: Player = g.player): void {
   fireWeapon(g, p);
@@ -80,6 +81,17 @@ export function playerHitFromEnemy(g: GameData, target: Player = g.player): bool
 }
 
 export function onEnemyKilled(g: GameData, e: Enemy, x: number, y: number): void {
+  if (!g.race) return applyEnemyKill(g, e, x, y);
+  const previous = g.rng;
+  g.rng = createRng(e.raceSeed ?? 0);
+  try {
+    applyEnemyKill(g, e, x, y);
+  } finally {
+    g.rng = previous;
+  }
+}
+
+function applyEnemyKill(g: GameData, e: Enemy, x: number, y: number): void {
   g.enemiesKilled++;
   const boss = e.type === 'boss';
   const cols = boss ? ['#f40', '#fa0', '#f60', '#fff', '#f20'] : ['#f60', '#fa0', '#f30', '#fff'];
@@ -113,16 +125,26 @@ export function onEnemyKilled(g: GameData, e: Enemy, x: number, y: number): void
     sfx.playBigExplosion();
     g.flashAlpha = 0.4;
     g.flashColor = '#fff';
-    g.slowMotion = 0.3;
-    g.slowMotionTimer = 0.6;
+    if (!g.race) {
+      g.slowMotion = 0.3;
+      g.slowMotionTimer = 0.6;
+    }
   } else {
     sfx.playExplosion();
   }
   if (e.type === 'splitter') {
+    const first = g.enemies.length;
     spawnSplitterChildren(g, x, y);
+    if (g.race) {
+      for (let i = first; i < g.enemies.length; i++) {
+        g.enemies[i].raceSeed = (Math.imul(e.raceSeed ?? 1, 31) + i - first) >>> 0;
+      }
+    }
   }
   tryPowerUp(g, x, y);
   tryWeaponDrop(g, x, y);
+
+  if (g.race || g.aiDemo) return;
 
   const coinReward = coinRewardForEnemy(e.type);
   awardRunCoins(g, coinReward, x, y - 22);
@@ -192,7 +214,11 @@ export function updateLaserFire(
   }
 }
 
-export function activateBomb(g: GameData, p: Player = g.player): void {
+export function activateBomb(g: GameData, p: Player = g.player, fromPickup = false): void {
+  if (g.race && !fromPickup) {
+    if ((g.raceBombs ?? 0) <= 0) return;
+    g.raceBombs!--;
+  }
   g.bullets = g.bullets.filter((b) => b.isPlayer);
   for (let ei = g.enemies.length - 1; ei >= 0; ei--) {
     const e = g.enemies[ei];
@@ -219,6 +245,7 @@ export function hurtPlayer(g: GameData, target: Player = g.player): void {
     return;
   }
   g.waveDamageTaken = true;
+  if (g.race) g.raceDamageTaken = (g.raceDamageTaken ?? 0) + 1;
   target.hp--;
   target.invincibleTimer = 2;
   shake(g, 10, 12);
@@ -244,7 +271,7 @@ export function killPlayer(g: GameData, target: Player = g.player): void {
   g.flashAlpha = 0.8;
   g.flashColor = '#fff';
   sfx.playGameOver();
-  if (!isPracticeMode(g) && !(isCoopMode(g) && g.coopRole !== 'host')) {
+  if (!g.race && !g.aiDemo && !isPracticeMode(g) && !(isCoopMode(g) && g.coopRole !== 'host')) {
     saveHighScore(g.score, g.wave);
   }
 }

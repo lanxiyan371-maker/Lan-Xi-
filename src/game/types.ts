@@ -18,12 +18,7 @@ export type Difficulty = 'easy' | 'normal' | 'hard';
 export type DailyModifier = 'double_speed' | 'no_powerups' | 'single_hp' | 'kamikaze_only';
 
 export type AchievementId =
-  | 'first_blood'
-  | 'combo_master'
-  | 'graze_king'
-  | 'boss_slayer'
-  | 'survivor'
-  | 'untouchable';
+  'first_blood' | 'combo_master' | 'graze_king' | 'boss_slayer' | 'survivor' | 'untouchable';
 
 export interface Particle {
   x: number;
@@ -70,6 +65,8 @@ export type EnemyType =
   | 'healer';
 
 export interface Enemy {
+  /** Stable race encounter identity; also seeds drops and splitter children. */
+  raceSeed?: number;
   x: number;
   y: number;
   width: number;
@@ -215,6 +212,14 @@ export interface Hazard {
 }
 
 export interface GameData {
+  /** Isolated score race: external encounter clock, no normal progression writes. */
+  race?: boolean;
+  aiDemo?: boolean;
+  enemySpeedScale?: number;
+  powerUpsCollected?: number;
+  powerUpsMissed?: number;
+  raceDamageTaken?: number;
+  raceBombs?: number;
   player: Player;
   /** Co-op second ship; null in solo modes. */
   player2: Player | null;

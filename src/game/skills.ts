@@ -215,13 +215,14 @@ export function drawSkillIndicator(ctx: CanvasRenderingContext2D, p: Player, x: 
   }
 
   ctx.fillStyle = ready ? '#fff' : '#889';
-  ctx.font = 'bold 10px "Segoe UI",Arial,sans-serif';
+  ctx.font =
+    'bold 10px "Microsoft YaHei","Noto Sans CJK SC","PingFang SC","Segoe UI",Arial,sans-serif';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   ctx.fillText('C', 0, 1);
 
   ctx.fillStyle = '#889';
-  ctx.font = '8px "Segoe UI",Arial,sans-serif';
+  ctx.font = '8px "Microsoft YaHei","Noto Sans CJK SC","PingFang SC","Segoe UI",Arial,sans-serif';
   ctx.fillText(craft.skillName.split(' ')[0].toUpperCase(), 0, radius + 10);
 
   ctx.restore();

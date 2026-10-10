@@ -115,10 +115,11 @@ function updateSniperAim(g: GameData, e: Enemy, tm: number): void {
 
 export function updateEnemies(g: GameData, dt: number, tm: number): void {
   tickHealerAuras(g, dt);
-  const speedMult = getEnemySpeedMult(g);
+  const speedScale = g.enemySpeedScale ?? 1;
+  const speedMult = getEnemySpeedMult(g) * speedScale;
 
   for (const e of g.enemies) {
-    e.movePhase += 0.03 * tm;
+    e.movePhase += 0.03 * tm * speedScale;
     if (e.flashTimer > 0) e.flashTimer -= dt;
 
     if (e.type === 'kamikaze') {

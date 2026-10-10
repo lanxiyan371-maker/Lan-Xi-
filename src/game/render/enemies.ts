@@ -1,4 +1,5 @@
 import type { Enemy, GameData } from '../types';
+import { drawArt, enemyArt } from './art';
 import { HEAL_RADIUS, SNIPER_AIM_FRAMES } from '../enemies/constants';
 import { bossAccentColors } from '../enemies/boss';
 
@@ -59,6 +60,22 @@ export function drawEnemy(
     ctx.restore();
   }
 
+  ctx.save();
+  if (f) ctx.globalAlpha = 0.45;
+  const rendered = drawArt(
+    ctx,
+    enemyArt(e),
+    0,
+    0,
+    e.width,
+    e.height,
+    e.type === 'boss' ? 0 : Math.PI,
+  );
+  ctx.restore();
+  if (rendered) {
+    ctx.restore();
+    return;
+  }
   if (e.type === 'boss') {
     const accent = bossAccentColors(e.bossPattern ?? 'fan');
     const gr = ctx.createLinearGradient(0, -e.height / 2, 0, e.height / 2);

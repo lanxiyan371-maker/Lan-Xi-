@@ -1,0 +1,135 @@
+.ai-decision-panel {
+  width: 240px;
+  box-sizing: border-box;
+  background: #192219f5;
+  border: 1px solid #667754;
+  color: #e4dfc9;
+  border-radius: 4px;
+  font:
+    12px 'Microsoft YaHei',
+    sans-serif;
+  text-align: left;
+}
+.ai-decision-panel summary {
+  cursor: pointer;
+  padding: 10px;
+  font-weight: bold;
+  color: #efd18e;
+}
+.ai-decision-panel summary > span {
+  float: right;
+  font-size: 10px;
+  color: #aebe9e;
+}
+.ai-decision-body {
+  padding: 0 10px 10px;
+}
+.ai-decision-panel dl {
+  margin: 0 0 10px;
+}
+.ai-decision-panel dt {
+  font-size: 10px;
+  color: #9fae93;
+}
+.ai-decision-panel dd {
+  margin: 3px 0 8px;
+  line-height: 1.5;
+}
+.ai-keyboard {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-bottom: 8px;
+}
+.ai-keyboard > span {
+  min-width: 42px;
+  padding: 5px 3px;
+  box-sizing: border-box;
+  text-align: center;
+  background: #0c130e;
+  border: 1px solid #43523a;
+  border-radius: 3px;
+  color: #829079;
+}
+.ai-keyboard > span.is-held {
+  background: #c8a75f;
+  color: #10170d;
+  border-color: #f5d99b;
+}
+.ai-keyboard kbd {
+  font: bold 13px monospace;
+}
+.ai-keyboard small {
+  display: block;
+  font-size: 9px;
+  margin-top: 2px;
+}
+.ai-decision-body > small {
+  color: #a2af95;
+  line-height: 1.5;
+  font-size: 10px;
+}
+.ai-decision-latency {
+  font-size: 10px;
+  color: #cfb87d;
+}
+.ai-recent-title {
+  font-size: 10px;
+}
+.ai-decision-panel ol {
+  padding: 0;
+  margin: 6px 0 0;
+  list-style: none;
+}
+.ai-decision-panel li {
+  display: flex;
+  gap: 7px;
+  padding: 5px 0;
+  border-top: 1px solid #35422e;
+  font-size: 10px;
+  line-height: 1.5;
+}
+.ai-decision-panel li time {
+  color: #afba9e;
+  flex-shrink: 0;
+}
+.ai-decision-panel li small {
+  display: block;
+  color: #d6b969;
+}
+.race-decision-sidebar {
+  width: 240px;
+  flex-shrink: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.solo-decision-sidebar {
+  position: absolute;
+  right: 12px;
+  top: 100px;
+  max-height: calc(100dvh - 120px);
+  overflow-y: auto;
+}
+@media (max-width: 700px) {
+  .race-arena:has(.race-decision-sidebar) {
+    flex-direction: column;
+    gap: 5px;
+  }
+  .race-decision-sidebar {
+    width: 100%;
+    max-height: 200px;
+    flex-shrink: 0;
+  }
+  .race-decision-sidebar .ai-decision-panel {
+    width: 100%;
+  }
+  .solo-decision-sidebar {
+    top: 95px;
+    right: 8px;
+  }
+  .solo-decision-sidebar .ai-decision-panel {
+    width: 210px;
+  }
+}

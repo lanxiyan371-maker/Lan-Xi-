@@ -24,9 +24,9 @@ export const WEAPON_ORDER: WeaponId[] = [
 export const WEAPONS: Record<WeaponId, WeaponDefinition> = {
   standard: {
     id: 'standard',
-    name: 'Standard Blaster',
-    shortName: 'STD',
-    tagline: 'Reliable spread-fire blaster',
+    name: '标准机炮',
+    shortName: '机炮',
+    tagline: '稳定可靠的扩散火力',
     hudColor: '#0ff',
     bulletColor: '#0ff',
     unlockedByDefault: true,
@@ -34,9 +34,9 @@ export const WEAPONS: Record<WeaponId, WeaponDefinition> = {
   },
   armor_piercing: {
     id: 'armor_piercing',
-    name: 'Armor Piercing',
-    shortName: 'AP',
-    tagline: 'Rounds pierce through enemies',
+    name: '穿甲机炮',
+    shortName: '穿甲',
+    tagline: '子弹可贯穿敌机',
     hudColor: '#8f8',
     bulletColor: '#afa',
     unlockedByDefault: false,
@@ -44,9 +44,9 @@ export const WEAPONS: Record<WeaponId, WeaponDefinition> = {
   },
   shotgun: {
     id: 'shotgun',
-    name: 'Shotgun',
-    shortName: 'SG',
-    tagline: 'Wide burst at close range',
+    name: '散弹炮',
+    shortName: '散弹',
+    tagline: '近距离大范围散射',
     hudColor: '#fa4',
     bulletColor: '#fc8',
     unlockedByDefault: false,
@@ -54,9 +54,9 @@ export const WEAPONS: Record<WeaponId, WeaponDefinition> = {
   },
   laser: {
     id: 'laser',
-    name: 'Laser',
-    shortName: 'LSR',
-    tagline: 'Continuous beam ramps damage',
+    name: '激光炮',
+    shortName: '激光',
+    tagline: '持续照射，伤害逐步提升',
     hudColor: '#f4f',
     bulletColor: '#f8f',
     unlockedByDefault: false,
@@ -64,9 +64,9 @@ export const WEAPONS: Record<WeaponId, WeaponDefinition> = {
   },
   homing: {
     id: 'homing',
-    name: 'Homing',
-    shortName: 'HMG',
-    tagline: 'Slow missiles track targets',
+    name: '追踪导弹',
+    shortName: '追踪',
+    tagline: '低速导弹，自动追踪目标',
     hudColor: '#f88',
     bulletColor: '#f88',
     unlockedByDefault: false,
@@ -87,6 +87,12 @@ export function nextWeapon(id: WeaponId, direction: -1 | 1): WeaponId {
 export const ALTERNATE_WEAPONS: WeaponId[] = WEAPON_ORDER.filter((id) => id !== 'standard');
 
 const BULLET_SPEED = 12;
+export const SHOTGUN_RANGE = 95;
+
+/** Null means the weapon can reach across the visible battlefield. */
+export function getWeaponRange(id: WeaponId): number | null {
+  return id === 'shotgun' ? SHOTGUN_RANGE : null;
+}
 
 function bulletColor(p: Player): string {
   const craft = getAircraft(p.aircraftId);
@@ -221,7 +227,7 @@ export function fireShotgun(g: GameData, p: Player = g.player) {
       isPlayer: true,
       color,
       weapon: 'shotgun',
-      maxTravel: 95,
+      maxTravel: SHOTGUN_RANGE,
       distanceTraveled: 0,
     });
     g.shotsFired++;
@@ -303,10 +309,11 @@ export function drawWeaponLabel(
   const weapon = getWeapon(weaponId);
   ctx.save();
   ctx.textAlign = 'left';
-  ctx.font = 'bold 11px "Segoe UI",Arial,sans-serif';
+  ctx.font =
+    'bold 11px "Microsoft YaHei","Noto Sans CJK SC","PingFang SC","Segoe UI",Arial,sans-serif';
   ctx.fillStyle = weapon.hudColor;
   ctx.fillText(weapon.shortName, x, y);
-  ctx.font = '9px "Segoe UI",Arial,sans-serif';
+  ctx.font = '9px "Microsoft YaHei","Noto Sans CJK SC","PingFang SC","Segoe UI",Arial,sans-serif';
   ctx.fillStyle = '#889';
   ctx.fillText(weapon.name, x, y + 12);
   ctx.restore();

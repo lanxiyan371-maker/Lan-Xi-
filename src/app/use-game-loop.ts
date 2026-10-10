@@ -25,6 +25,7 @@ export function useGameLoop(
   inputRef: RefObject<InputState>,
   rafRef: RefObject<number>,
   sessionRef: RefObject<CoopSession>,
+  driver?: (game: GameData, input: InputState, now: number) => InputState,
 ): void {
   useEffect(() => {
     const cvs = canvasRef.current;
@@ -58,8 +59,9 @@ export function useGameLoop(
       const wasPlaying = game.state === 'playing';
 
       while (accumulator >= FIXED_TIMESTEP_S) {
+        const drivingInput = !isCoopMode(game) && driver ? driver(game, input, now) : input;
         if (game.state === 'playing' && !isGuest) {
-          update(game, input, FIXED_TIMESTEP_S);
+          update(game, drivingInput, FIXED_TIMESTEP_S);
         } else {
           updateBackground(game, FIXED_TIMESTEP_S);
         }

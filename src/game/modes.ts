@@ -13,21 +13,21 @@ export const MODE_ORDER: GameMode[] = [
 ];
 
 export const MODE_INFO: Record<GameMode, { name: string; tagline: string }> = {
-  story: { name: 'Story Mode', tagline: '4 chapters · 20 stages' },
-  endless: { name: 'Endless', tagline: 'Survive infinite waves' },
-  boss_rush: { name: 'Boss Rush', tagline: 'Back-to-back boss fights' },
-  daily: { name: 'Daily Challenge', tagline: 'Seeded run with a twist' },
-  practice: { name: 'Practice', tagline: 'Invincible sandbox · no rewards' },
-  coop_endless: { name: 'Co-op Endless', tagline: '2P · room code · team wipe' },
+  story: { name: '剧情模式', tagline: '4 个章节 · 20 个关卡' },
+  endless: { name: '无尽模式', tagline: '挑战源源不断的敌机' },
+  boss_rush: { name: '首领挑战', tagline: '连续挑战强大首领' },
+  daily: { name: '每日挑战', tagline: '每日固定战局 · 特殊规则' },
+  practice: { name: '练习模式', tagline: '无敌练习 · 不计奖励' },
+  coop_endless: { name: '双人无尽', tagline: '双人合作 · 房间码加入 · 任一阵亡即结束' },
 };
 
 export const DIFFICULTY_ORDER: Difficulty[] = ['easy', 'normal', 'hard'];
 
 export const DIFFICULTY_INFO: Record<Difficulty, { name: string; tagline: string; color: string }> =
   {
-    easy: { name: 'Easy', tagline: 'Slower enemies, +1 HP', color: '#4f8' },
-    normal: { name: 'Normal', tagline: 'Balanced challenge', color: '#8df' },
-    hard: { name: 'Hard', tagline: 'Faster, tankier, relentless', color: '#f88' },
+    easy: { name: '简单', tagline: '敌机减速 · 初始生命 +1', color: '#4f8' },
+    normal: { name: '普通', tagline: '均衡的标准挑战', color: '#8df' },
+    hard: { name: '困难', tagline: '敌机更快、更耐打，进攻更密集', color: '#f88' },
   };
 
 export function nextDifficulty(diff: Difficulty, direction: -1 | 1): Difficulty {
@@ -44,10 +44,10 @@ const DAILY_MODIFIERS: DailyModifier[] = [
 ];
 
 const STORY_BOSSES: Record<number, string> = {
-  5: 'Space Commander',
-  10: 'Mining Rig',
-  15: 'Carrier Core',
-  20: 'Void Entity',
+  5: '机械要塞',
+  10: '采矿巨械',
+  15: '装甲母舰',
+  20: '失控反应炉',
 };
 
 const STORY_MAX_STAGE = 20;
@@ -70,13 +70,13 @@ export function pickDailyModifier(seed: number): DailyModifier {
 export function getDailyModifierLabel(mod: DailyModifier): string {
   switch (mod) {
     case 'double_speed':
-      return '2× enemy speed';
+      return '敌机速度翻倍';
     case 'no_powerups':
-      return 'No power-ups';
+      return '无强化道具';
     case 'single_hp':
-      return 'Single HP';
+      return '仅 1 点生命';
     case 'kamikaze_only':
-      return 'Kamikaze swarm';
+      return '自爆机群';
   }
 }
 
@@ -123,7 +123,7 @@ export function practiceStartWaveLabel(wave: number): string {
   const w = clampPracticeStartWave(wave);
   const chapter = getChapter(getChapterForWave(w));
   const isBoss = w % 5 === 0 && w >= 5;
-  return isBoss ? `${chapter.name} · boss` : chapter.name;
+  return isBoss ? `${chapter.name} · 首领` : chapter.name;
 }
 
 export function applyDailyPlayerMods(g: GameData): void {
@@ -182,9 +182,9 @@ export function isStoryComplete(g: GameData): boolean {
 }
 
 export function getWaveLabel(g: GameData): string {
-  if (g.gameMode === 'story') return `STAGE ${g.wave}`;
-  if (g.gameMode === 'boss_rush') return `BOSS ${g.wave}`;
-  return `WAVE ${g.wave}`;
+  if (g.gameMode === 'story') return `第 ${g.wave} 关`;
+  if (g.gameMode === 'boss_rush') return `首领 ${g.wave}`;
+  return `第 ${g.wave} 波`;
 }
 
 export interface WaveAnnounce {
@@ -199,20 +199,20 @@ export function getWaveAnnounce(g: GameData): WaveAnnounce {
   if (g.gameMode === 'story') {
     const bossName = STORY_BOSSES[g.wave];
     if (boss && bossName) {
-      return { main: `⚠ ${bossName.toUpperCase()} ⚠`, sub: `STAGE ${g.wave}`, boss: true };
+      return { main: `⚠ ${bossName.toUpperCase()} ⚠`, sub: `第 ${g.wave} 关`, boss: true };
     }
     const chapter = getChapter(getChapterForMode(g));
-    return { main: `STAGE ${g.wave}`, sub: chapter.name.toUpperCase(), boss: false };
+    return { main: `第 ${g.wave} 关`, sub: chapter.name.toUpperCase(), boss: false };
   }
   if (g.gameMode === 'boss_rush') {
-    return { main: `⚠ BOSS ${g.wave} ⚠`, boss: true };
+    return { main: `⚠ 首领 ${g.wave} ⚠`, boss: true };
   }
   if (boss) {
-    return { main: `⚠ BOSS WAVE ${g.wave} ⚠`, boss: true };
+    return { main: `⚠ 首领来袭 · 第 ${g.wave} 波 ⚠`, boss: true };
   }
   const chapter = getChapter(getChapterForMode(g));
   return {
-    main: `WAVE ${g.wave}`,
+    main: `第 ${g.wave} 波`,
     sub: g.wave > 1 ? chapter.name.toUpperCase() : undefined,
     boss: false,
   };

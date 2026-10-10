@@ -44,3 +44,13 @@ yarn-error.log*
 # local agent / indexing tooling (never commit)
 .codegraph/
 .superpowers/
+
+# Local Pyramid runtime and generated files
+*.log
+__pycache__/
+.venv/
+models/
+*-install-log*.txt
+*-runtime-check.txt
+previews/
+*.zip

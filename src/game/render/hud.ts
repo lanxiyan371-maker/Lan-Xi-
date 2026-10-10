@@ -50,7 +50,7 @@ function drawHpBar(
     ctx.stroke();
   }
   ctx.textAlign = 'right';
-  ctx.font = '9px "Segoe UI",Arial,sans-serif';
+  ctx.font = '9px "Microsoft YaHei","Noto Sans CJK SC","PingFang SC","Segoe UI",Arial,sans-serif';
   ctx.fillStyle = labelColor;
   ctx.fillText(label, barX - totalW - 5, barY + segH - 1);
   return barY + segH;
@@ -58,8 +58,8 @@ function drawHpBar(
 
 function seatHudLabel(g: GameData, p: Player): string {
   const seat = coopSeatForShip(g, p);
-  if (seat === 'host') return 'HOST';
-  if (seat === 'guest') return 'GUEST';
+  if (seat === 'host') return '房主';
+  if (seat === 'guest') return '队友';
   return 'P2';
 }
 
@@ -71,21 +71,28 @@ function seatHudColor(g: GameData, p: Player): string {
 export function drawHUD(ctx: CanvasRenderingContext2D, g: GameData) {
   const p = g.player;
   ctx.fillStyle = '#fff';
-  ctx.font = 'bold 20px "Segoe UI",Arial,sans-serif';
+  ctx.font =
+    'bold 20px "Microsoft YaHei","Noto Sans CJK SC","PingFang SC","Segoe UI",Arial,sans-serif';
   ctx.textAlign = 'left';
   ctx.fillText(g.score.toLocaleString(), 10, 30);
-  ctx.font = '14px "Segoe UI",Arial,sans-serif';
+  ctx.font = '14px "Microsoft YaHei","Noto Sans CJK SC","PingFang SC","Segoe UI",Arial,sans-serif';
   ctx.fillStyle = '#aac';
   ctx.fillText(getWaveLabel(g), 10, 50);
   const chapter = getChapter(g.chapterId);
-  ctx.font = '11px "Segoe UI",Arial,sans-serif';
+  ctx.font = '11px "Microsoft YaHei","Noto Sans CJK SC","PingFang SC","Segoe UI",Arial,sans-serif';
   ctx.fillStyle = chapter.hudColor;
   ctx.fillText(chapter.name, 10, 64);
   if (g.gameMode === 'daily' && g.dailyModifier) {
     ctx.fillStyle = '#da8';
     ctx.fillText(getDailyModifierLabel(g.dailyModifier), 10, 78);
   }
-  let barBottom = drawHpBar(ctx, p, 14, g.player2 ? seatHudLabel(g, p) : 'HP', seatHudColor(g, p));
+  let barBottom = drawHpBar(
+    ctx,
+    p,
+    14,
+    g.player2 ? seatHudLabel(g, p) : '生命',
+    seatHudColor(g, p),
+  );
   if (g.player2) {
     barBottom = drawHpBar(
       ctx,
@@ -98,25 +105,28 @@ export function drawHUD(ctx: CanvasRenderingContext2D, g: GameData) {
   const statusY = barBottom + 10;
   ctx.textAlign = 'right';
   if (p.powerLevel > 0) {
-    ctx.font = '11px "Segoe UI",Arial,sans-serif';
+    ctx.font =
+      '11px "Microsoft YaHei","Noto Sans CJK SC","PingFang SC","Segoe UI",Arial,sans-serif';
     ctx.fillStyle = '#4df';
     ctx.fillText(
-      'PWR ' + '▮'.repeat(p.powerLevel) + '▯'.repeat(3 - p.powerLevel),
+      '火力 ' + '▮'.repeat(p.powerLevel) + '▯'.repeat(3 - p.powerLevel),
       CANVAS_W - 10,
       statusY,
     );
   }
   if (p.shieldActive) {
     ctx.fillStyle = '#48f';
-    ctx.font = '11px "Segoe UI",Arial,sans-serif';
-    ctx.fillText('SHIELD', CANVAS_W - 10, statusY + (p.powerLevel > 0 ? 14 : 0));
+    ctx.font =
+      '11px "Microsoft YaHei","Noto Sans CJK SC","PingFang SC","Segoe UI",Arial,sans-serif';
+    ctx.fillText('护盾', CANVAS_W - 10, statusY + (p.powerLevel > 0 ? 14 : 0));
   }
   if (p.grazeCount > 0) {
     ctx.textAlign = 'left';
-    ctx.font = '11px "Segoe UI",Arial,sans-serif';
+    ctx.font =
+      '11px "Microsoft YaHei","Noto Sans CJK SC","PingFang SC","Segoe UI",Arial,sans-serif';
     ctx.fillStyle = '#8ac';
     ctx.globalAlpha = 0.6;
-    ctx.fillText(`GRAZE ×${p.grazeCount}`, 10, CANVAS_H - 12);
+    ctx.fillText(`擦弹 ×${p.grazeCount}`, 10, CANVAS_H - 12);
     ctx.globalAlpha = 1;
   }
 
@@ -125,19 +135,21 @@ export function drawHUD(ctx: CanvasRenderingContext2D, g: GameData) {
   let footerY = CANVAS_H - 12;
   if (g.autoFire) {
     ctx.textAlign = 'right';
-    ctx.font = '11px "Segoe UI",Arial,sans-serif';
+    ctx.font =
+      '11px "Microsoft YaHei","Noto Sans CJK SC","PingFang SC","Segoe UI",Arial,sans-serif';
     ctx.fillStyle = '#4f8';
     ctx.globalAlpha = 0.85;
-    ctx.fillText('AUTO', CANVAS_W - 10, footerY);
+    ctx.fillText('自动射击', CANVAS_W - 10, footerY);
     ctx.globalAlpha = 1;
     footerY -= 14;
   }
   if (g.gameMode === 'practice' && g.practiceInvincible) {
     ctx.textAlign = 'right';
-    ctx.font = '11px "Segoe UI",Arial,sans-serif';
+    ctx.font =
+      '11px "Microsoft YaHei","Noto Sans CJK SC","PingFang SC","Segoe UI",Arial,sans-serif';
     ctx.fillStyle = '#fd4';
     ctx.globalAlpha = 0.85;
-    ctx.fillText('INV', CANVAS_W - 10, footerY);
+    ctx.fillText('无敌', CANVAS_W - 10, footerY);
     ctx.globalAlpha = 1;
   }
 }

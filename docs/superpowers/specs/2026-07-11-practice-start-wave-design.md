@@ -99,7 +99,7 @@ Leaving Practice mode does not need to reset `practiceStartWave` (harmless); swi
 | `src/game/types.ts`              | `practiceStartWave`                                                 |
 | `src/game/engine.ts`             | Init default; `cyclePracticeStartWave`; `resetGame` uses start wave |
 | `src/game/modes.ts`              | Clamp / next / label helpers + tests                                |
-| `src/game/modes.test.ts`         | Wrap 1↔20; label boss waves; reset path optional via engine test   |
+| `src/game/modes.test.ts`         | Wrap 1↔20; label boss waves; reset path optional via engine test    |
 | `src/game/render/menu-layout.ts` | Practice offset + `cycle_practice_start_wave` touch action          |
 | `src/game/render/menu.ts`        | Draw row when Practice; controls line                               |
 | `src/app/use-keyboard-input.ts`  | `-` / `=` on menu + Practice                                        |

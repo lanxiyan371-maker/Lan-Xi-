@@ -1,4 +1,5 @@
 import type { ChapterId, GameData, Nebula } from './types';
+import { drawArtBackground } from './render/art';
 import { CANVAS_W, CANVAS_H } from './core/constants';
 
 export interface ChapterDefinition {
@@ -20,8 +21,8 @@ export const CHAPTER_ORDER: ChapterId[] = ['space', 'asteroid', 'carrier', 'worm
 export const CHAPTERS: Record<ChapterId, ChapterDefinition> = {
   space: {
     id: 'space',
-    name: 'Deep Space',
-    tagline: 'Standard patrol zone',
+    name: '工业废墟',
+    tagline: '穿越废弃的工业区',
     bgTop: '#060614',
     bgMid: '#0a0e22',
     bgBottom: '#060614',
@@ -33,8 +34,8 @@ export const CHAPTERS: Record<ChapterId, ChapterDefinition> = {
   },
   asteroid: {
     id: 'asteroid',
-    name: 'Asteroid Belt',
-    tagline: 'Dodge falling debris',
+    name: '废铁荒原',
+    tagline: '躲避漂移的金属残骸',
     bgTop: '#100c08',
     bgMid: '#1a140c',
     bgBottom: '#0c0806',
@@ -46,8 +47,8 @@ export const CHAPTERS: Record<ChapterId, ChapterDefinition> = {
   },
   carrier: {
     id: 'carrier',
-    name: 'Enemy Carrier',
-    tagline: 'Beware fixed turrets',
+    name: '遗弃航母',
+    tagline: '小心固定炮台',
     bgTop: '#080a10',
     bgMid: '#10141c',
     bgBottom: '#06080c',
@@ -59,8 +60,8 @@ export const CHAPTERS: Record<ChapterId, ChapterDefinition> = {
   },
   wormhole: {
     id: 'wormhole',
-    name: 'Wormhole',
-    tagline: 'Unstable teleport pads',
+    name: '反应炉核心',
+    tagline: '不稳定的能量传送区',
     bgTop: '#100818',
     bgMid: '#1a0830',
     bgBottom: '#080410',
@@ -125,6 +126,7 @@ export function syncChapterForWave(g: GameData): void {
 }
 
 export function drawChapterBackground(ctx: CanvasRenderingContext2D, g: GameData): void {
+  if (drawArtBackground(ctx, g)) return;
   const chapter = getChapter(g.chapterId);
   const bg = ctx.createLinearGradient(0, 0, 0, CANVAS_H);
   bg.addColorStop(0, chapter.bgTop);

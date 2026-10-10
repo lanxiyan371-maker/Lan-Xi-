@@ -1,3 +1,4 @@
+import { drawArt } from './render/art';
 import type { GameData, Hazard, Player } from './types';
 import { getChapter } from './chapters';
 import * as sfx from './audio';
@@ -129,7 +130,7 @@ function tryTeleport(g: GameData, p: Player, pad: Hazard): void {
 export function updateHazards(g: GameData, dt: number, tm: number): void {
   const chapter = getChapter(g.chapterId);
 
-  if (chapter.hazardType === 'asteroid') {
+  if (!g.race && chapter.hazardType === 'asteroid') {
     g.hazardSpawnTimer -= tm;
     const count = g.hazards.filter((h) => h.type === 'asteroid').length;
     if (g.hazardSpawnTimer <= 0 && count < MAX_ASTEROIDS) {
@@ -173,6 +174,16 @@ export function drawHazards(ctx: CanvasRenderingContext2D, g: GameData): void {
     ctx.save();
     ctx.translate(h.x, h.y);
 
+    const rotation =
+      h.type === 'asteroid'
+        ? (h.rot ?? 0)
+        : h.type === 'turret'
+          ? Math.atan2(g.player.y - h.y, g.player.x - h.x) - Math.PI / 2
+          : 0;
+    if (drawArt(ctx, `prop_${h.type}`, 0, 0, h.width, h.height, rotation)) {
+      ctx.restore();
+      continue;
+    }
     if (h.type === 'asteroid') {
       ctx.rotate(h.rot ?? 0);
       ctx.fillStyle = '#876';
@@ -223,7 +234,8 @@ export function drawHazards(ctx: CanvasRenderingContext2D, g: GameData): void {
       ctx.fill();
       ctx.restore();
       ctx.fillStyle = '#eef';
-      ctx.font = '10px "Segoe UI",Arial,sans-serif';
+      ctx.font =
+        '10px "Microsoft YaHei","Noto Sans CJK SC","PingFang SC","Segoe UI",Arial,sans-serif';
       ctx.textAlign = 'center';
       ctx.fillText('◇', 0, 4);
     }

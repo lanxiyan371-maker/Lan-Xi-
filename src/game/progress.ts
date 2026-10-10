@@ -24,19 +24,19 @@ export interface AchievementDefinition {
 }
 
 export const ACHIEVEMENTS: Record<AchievementId, AchievementDefinition> = {
-  first_blood: { id: 'first_blood', name: 'First Blood', description: 'Destroy your first enemy' },
-  combo_master: { id: 'combo_master', name: 'Combo Master', description: 'Reach a 20× combo' },
-  graze_king: { id: 'graze_king', name: 'Graze King', description: 'Graze 50 bullets in one run' },
+  first_blood: { id: 'first_blood', name: '初露锋芒', description: '击落第一架敌机' },
+  combo_master: { id: 'combo_master', name: '连击大师', description: '达成 20 连击' },
+  graze_king: { id: 'graze_king', name: '擦弹高手', description: '单局擦过 50 发子弹' },
   boss_slayer: {
     id: 'boss_slayer',
-    name: 'Boss Slayer',
-    description: 'Defeat 10 bosses (lifetime)',
+    name: '首领克星',
+    description: '累计击败 10 个首领',
   },
-  survivor: { id: 'survivor', name: 'Survivor', description: 'Reach wave 10' },
+  survivor: { id: 'survivor', name: '生存专家', description: '坚持到第 10 波' },
   untouchable: {
     id: 'untouchable',
-    name: 'Untouchable',
-    description: 'Clear a stage without taking damage',
+    name: '毫发无伤',
+    description: '无伤通过一个关卡',
   },
 };
 

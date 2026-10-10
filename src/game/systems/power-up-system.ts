@@ -14,21 +14,21 @@ function applyPowerUp(g: GameData, p: Player, pw: PowerUp): void {
     case 'spread':
       p.powerLevel = Math.min(3, p.powerLevel + 1);
       sfx.playPowerUp();
-      addScorePopup(g, pw.x, pw.y, 'POWER UP', '#f80');
+      addScorePopup(g, pw.x, pw.y, '火力提升', '#f80');
       break;
     case 'speed':
       p.shootInterval = Math.max(3, p.shootInterval - 1);
       sfx.playPowerUp();
-      addScorePopup(g, pw.x, pw.y, 'FIRE RATE', '#0f8');
+      addScorePopup(g, pw.x, pw.y, '射速提升', '#0f8');
       break;
     case 'shield':
       p.shieldActive = true;
       p.shieldTimer = 10;
       sfx.playPowerUp();
-      addScorePopup(g, pw.x, pw.y, 'SHIELD', '#48f');
+      addScorePopup(g, pw.x, pw.y, '护盾', '#48f');
       break;
     case 'bomb':
-      activateBomb(g, p);
+      activateBomb(g, p, true);
       break;
     case 'heal':
       if (p.hp < p.maxHp) {
@@ -39,7 +39,7 @@ function applyPowerUp(g: GameData, p: Player, pw: PowerUp): void {
         addRing(g, p.x, p.y, '#44ff88', 30);
         g.flashAlpha = 0.15;
         g.flashColor = '#44ff88';
-        addScorePopup(g, pw.x, pw.y, '+1 HP', '#4f8');
+        addScorePopup(g, pw.x, pw.y, '生命 +1', '#4f8');
       } else {
         g.score += 500;
         sfx.playPowerUp();
@@ -69,6 +69,7 @@ export function updatePowerUps(g: GameData): void {
     const pw = g.powerUps[i];
     pw.y += pw.vy;
     if (pw.y > CANVAS_H + 30) {
+      g.powerUpsMissed = (g.powerUpsMissed ?? 0) + 1;
       g.powerUps.splice(i, 1);
       continue;
     }
@@ -81,6 +82,7 @@ export function updatePowerUps(g: GameData): void {
       continue;
     }
     applyPowerUp(g, collector, pw);
+    g.powerUpsCollected = (g.powerUpsCollected ?? 0) + 1;
     g.powerUps.splice(i, 1);
   }
 }

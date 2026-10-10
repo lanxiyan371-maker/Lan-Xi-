@@ -22,7 +22,7 @@ export function tickAchievementToast(g: GameData, dt: number): void {
 }
 
 export function queueAchievement(g: GameData, id: AchievementId): void {
-  if (isPracticeMode(g)) {
+  if (g.race || g.aiDemo || isPracticeMode(g)) {
     return;
   }
   const unlocked = unlockAchievement(id);
@@ -33,7 +33,7 @@ export function queueAchievement(g: GameData, id: AchievementId): void {
 }
 
 export function awardRunCoins(g: GameData, amount: number, x?: number, y?: number): void {
-  if (isPracticeMode(g) || amount <= 0) {
+  if (g.race || g.aiDemo || isPracticeMode(g) || amount <= 0) {
     return;
   }
   if (isCoopMode(g) && g.coopRole !== 'host') {
